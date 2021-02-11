@@ -25,6 +25,7 @@ import static org.apache.openmeetings.db.dto.user.OAuthUser.PARAM_LNAME;
 import static org.apache.openmeetings.db.dto.user.OAuthUser.PARAM_LOGIN;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_APPLICATION_BASE_URL;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_APPLICATION_NAME;
+import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_APPOINTMENT_PRE_START_MINUTES;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_APPOINTMENT_REMINDER_MINUTES;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_AUTO_OPEN_SHARING;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_CALENDAR_ROOM_CAPACITY;
@@ -80,6 +81,7 @@ import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_PATH_FFM
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_PATH_IMAGEMAGIC;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_PATH_OFFICE;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_PATH_SOX;
+import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_RECORDING_ENABLED;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_REDIRECT_URL_FOR_EXTERNAL;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_REGISTER_FRONTEND;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.CONFIG_REGISTER_OAUTH;
@@ -108,9 +110,10 @@ import static org.apache.openmeetings.util.OpenmeetingsVariables.DEFAULT_CSP_DAT
 import static org.apache.openmeetings.util.OpenmeetingsVariables.DEFAULT_CSP_FONT;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.DEFAULT_CSP_STYLE;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.DEFAULT_MAX_UPLOAD_SIZE;
-import static org.apache.openmeetings.util.OpenmeetingsVariables.DEFAULT_MINUTES_REMINDER_SEND;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.USER_LOGIN_MINIMUM_LENGTH;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.USER_PASSWORD_MINIMUM_LENGTH;
+import static org.apache.openmeetings.util.OpenmeetingsVariables.getAppointmentPreStartMinutes;
+import static org.apache.openmeetings.util.OpenmeetingsVariables.getAppointmentReminderMinutes;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.getAudioBitrate;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.getAudioRate;
 import static org.apache.openmeetings.util.OpenmeetingsVariables.getDefaultGroup;
@@ -119,14 +122,13 @@ import static org.apache.wicket.csp.CSPDirectiveSrcValue.SELF;
 import static org.apache.wicket.csp.CSPDirectiveSrcValue.STRICT_DYNAMIC;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.apache.openmeetings.core.sip.SipManager;
 import org.apache.openmeetings.db.dao.basic.ConfigurationDao;
 import org.apache.openmeetings.db.dao.label.LabelDao;
 import org.apache.openmeetings.db.dao.room.RoomDao;
-import org.apache.openmeetings.db.dao.room.SipDao;
 import org.apache.openmeetings.db.dao.server.OAuth2Dao;
 import org.apache.openmeetings.db.dao.user.GroupDao;
 import org.apache.openmeetings.db.dao.user.UserDao;
@@ -168,7 +170,7 @@ public class ImportInitvalues {
 	@Autowired
 	private UserDao userDao;
 	@Autowired
-	private SipDao sipDao;
+	private SipManager sipDao;
 	@Autowired
 	private OAuth2Dao oauthDao;
 	@Autowired
@@ -307,7 +309,7 @@ public class ImportInitvalues {
 		addCfg(list, CONFIG_MAX_UPLOAD_SIZE, String.valueOf(DEFAULT_MAX_UPLOAD_SIZE), Configuration.Type.NUMBER,
 				"Maximum size of upload file (bytes)", VER_1_8);
 
-		addCfg(list, CONFIG_APPOINTMENT_REMINDER_MINUTES, String.valueOf(DEFAULT_MINUTES_REMINDER_SEND), Configuration.Type.NUMBER,
+		addCfg(list, CONFIG_APPOINTMENT_REMINDER_MINUTES, String.valueOf(getAppointmentReminderMinutes()), Configuration.Type.NUMBER,
 				"The number of minutes before reminder emails are send. Set to 0 to disable reminder emails", VER_1_9);
 
 		addCfg(list, CONFIG_LOGIN_MIN_LENGTH, String.valueOf(USER_LOGIN_MINIMUM_LENGTH), Configuration.Type.NUMBER,
@@ -391,6 +393,9 @@ public class ImportInitvalues {
 		addCfg(list, CONFIG_PASS_CHECK_UPPER, String.valueOf(true), Configuration.Type.BOOL, "Whether or not Password MUST contain uppercase characters", VER_5_0_1);
 		addCfg(list, CONFIG_PASS_CHECK_DIGIT, String.valueOf(true), Configuration.Type.BOOL, "Whether or not Password MUST contain numeric", VER_5_0_1);
 		addCfg(list, CONFIG_PASS_CHECK_SPECIAL, String.valueOf(true), Configuration.Type.BOOL, "Whether or not Password MUST contain special character", VER_5_0_1);
+		addCfg(list, CONFIG_APPOINTMENT_PRE_START_MINUTES, String.valueOf(getAppointmentPreStartMinutes()), Configuration.Type.NUMBER
+				, "How many minutes before the start the room should be open (default: " + getAppointmentPreStartMinutes() + ")", VER_5_0_1);
+		addCfg(list, CONFIG_RECORDING_ENABLED, String.valueOf(true), Configuration.Type.BOOL, "Whether or not recording functionality is enabled", "6.0.0");
 		return list;
 	}
 	public void loadConfiguration(InstallationConfig cfg) {
@@ -404,7 +409,6 @@ public class ImportInitvalues {
 		Room r = new Room();
 		r.setName(name);
 		r.setComment("");
-		r.setInserted(new Date());
 		r.setCapacity(capacity);
 		r.setType(type);
 		r.setIspublic(isPublic);
@@ -463,7 +467,6 @@ public class ImportInitvalues {
 		g.setName(cfg.getGroup());
 		g.setInsertedby(1L);
 		g.setDeleted(false);
-		g.setInserted(new Date());
 		g = groupDao.update(g, null);
 		Configuration c = cfgDao.get(CONFIG_DEFAULT_GROUP_ID);
 		c.setValueN(g.getId());

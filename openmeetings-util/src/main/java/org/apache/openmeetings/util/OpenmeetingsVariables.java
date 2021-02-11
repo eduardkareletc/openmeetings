@@ -57,6 +57,7 @@ public class OpenmeetingsVariables {
 	public static final String CONFIG_IGNORE_BAD_SSL = "oauth2.ignore.bad.ssl";
 	public static final String CONFIG_REDIRECT_URL_FOR_EXTERNAL = "redirect.url.for.external.users";
 	public static final String CONFIG_APPOINTMENT_REMINDER_MINUTES = "number.minutes.reminder.send";
+	public static final String CONFIG_APPOINTMENT_PRE_START_MINUTES = "appointment.pre.start.minutes";
 	public static final String CONFIG_APPLICATION_NAME = "application.name";
 	public static final String CONFIG_APPLICATION_BASE_URL = "application.base.url";
 	public static final String CONFIG_SCREENSHARING_QUALITY = "screensharing.default.quality";
@@ -111,6 +112,7 @@ public class OpenmeetingsVariables {
 	public static final String CONFIG_CSP_SCRIPT = "header.csp.script";
 	public static final String CONFIG_CSP_STYLE = "header.csp.style";
 	public static final String CONFIG_CSP_ENABLED = "header.csp.enabled";
+	public static final String CONFIG_RECORDING_ENABLED = "recording.enabled";
 
 	public static final int RECENT_ROOMS_COUNT = 5;
 	public static final int USER_LOGIN_MINIMUM_LENGTH = 4;
@@ -118,8 +120,7 @@ public class OpenmeetingsVariables {
 	public static final String DEFAULT_APP_NAME = "OpenMeetings";
 	public static final String DEFAULT_CONTEXT_NAME = "openmeetings";
 	public static final long DEFAULT_MAX_UPLOAD_SIZE = 100 * 1024 * 1024L; // 100MB
-	public static final int DEFAULT_MINUTES_REMINDER_SEND = 15;
-	public static final String DEFAULT_BASE_URL = "http://localhost:5080/openmeetings/";
+	public static final String DEFAULT_BASE_URL = "https://localhost:5443/openmeetings/";
 	public static final String DEFAULT_SIP_CONTEXT = "rooms";
 	public static final String DEFAULT_CSP_FONT = "https://fonts.gstatic.com";
 	public static final String DEFAULT_CSP_STYLE = "https://fonts.googleapis.com/css";
@@ -175,6 +176,9 @@ public class OpenmeetingsVariables {
 	private static int smtpConnectionTimeOut;
 	private static String mailFrom;
 	private static boolean mailAddReplyTo;
+	private static int appointmentReminderMinutes = 15;
+	private static int appointmentPreStartMinutes = 5;
+	private static boolean recordingsEnabled = true;
 
 	private OpenmeetingsVariables() {}
 
@@ -581,5 +585,29 @@ public class OpenmeetingsVariables {
 
 	public static void setMailAddReplyTo(boolean addReplyTo) {
 		mailAddReplyTo = addReplyTo;
+	}
+
+	public static int getAppointmentPreStartMinutes() {
+		return appointmentPreStartMinutes;
+	}
+
+	public static void setAppointmentPreStartMinutes(int minutes) {
+		appointmentPreStartMinutes = minutes;
+	}
+
+	public static int getAppointmentReminderMinutes() {
+		return appointmentReminderMinutes;
+	}
+
+	public static void setAppointmentReminderMinutes(int minutes) {
+		appointmentReminderMinutes = minutes;
+	}
+
+	public static boolean isRecordingsEnabled() {
+		return recordingsEnabled;
+	}
+
+	public static void setRecordingsEnabled(boolean enabled) {
+		recordingsEnabled = enabled;
 	}
 }

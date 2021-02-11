@@ -34,6 +34,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 /**
  * add/update/delete {@link Configuration}
@@ -45,6 +46,9 @@ public class ConfigsPanel extends AdminBasePanel {
 	private static final long serialVersionUID = 1L;
 	private ConfigForm form;
 	private final WebMarkupContainer listContainer = new WebMarkupContainer("listContainer");
+
+	@SpringBean
+	private ConfigurationDao cfgDao;
 
 	public ConfigsPanel(String id) {
 		super(id);
@@ -67,8 +71,8 @@ public class ConfigsPanel extends AdminBasePanel {
 
 					@Override
 					protected void onEvent(AjaxRequestTarget target) {
-						form.setNewVisible(false);
-						form.setModelObject(c);
+						form.setNewRecordVisible(false);
+						form.setModelObject(cfgDao.get(c.getId())); // force fetch lazy user
 						target.add(form, listContainer);
 					}
 				});
@@ -92,7 +96,6 @@ public class ConfigsPanel extends AdminBasePanel {
 		add(navigator);
 
 		form = new ConfigForm("form", listContainer, new Configuration());
-		form.setNewVisible(true);
 		add(form);
 		super.onInitialize();
 	}

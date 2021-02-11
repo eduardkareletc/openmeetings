@@ -98,6 +98,7 @@ public class OAuthForm extends AdminBaseForm<OAuthServer> {
 
 	@Override
 	protected void onInitialize() {
+		super.onInitialize();
 		add(new CheckBox("isEnabled"));
 		add(new RequiredTextField<String>("name").setLabel(new ResourceModel("165")));
 		add(new TextField<String>("iconUrl").setLabel(new ResourceModel("1575")));
@@ -129,7 +130,7 @@ public class OAuthForm extends AdminBaseForm<OAuthServer> {
 					}
 				}).setOutputMarkupId(true));
 		add(attrsContainer.add(updateMapping()).setOutputMarkupId(true));
-		super.onInitialize();
+		setNewRecordVisible(true);
 	}
 
 	private Component updateMapping() {
@@ -152,7 +153,7 @@ public class OAuthForm extends AdminBaseForm<OAuthServer> {
 		oauthDao.update(getModelObject(), getUserId());
 		OAuthServer oauthServer = oauthDao.get(getModelObject().getId());
 		this.setModelObject(oauthServer);
-		setNewVisible(false);
+		setNewRecordVisible(false);
 		target.add(this);
 		target.add(listContainer);
 	}

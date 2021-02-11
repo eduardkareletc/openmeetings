@@ -18,13 +18,14 @@
  */
 package org.apache.openmeetings.web.room;
 
+import static de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal.BUTTON_MARKUP_ID;
 import static java.time.Duration.ZERO;
 import static org.apache.openmeetings.core.remote.KurentoHandler.activityAllowed;
 import static org.apache.openmeetings.core.util.ChatWebSocketHelper.ID_USER_PREFIX;
+import static org.apache.openmeetings.db.entity.calendar.Appointment.allowedStart;
 import static org.apache.openmeetings.util.OmFileHelper.EXTENSION_PDF;
 import static org.apache.openmeetings.web.app.WebSession.getDateFormat;
 import static org.apache.openmeetings.web.app.WebSession.getUserId;
-import static org.apache.openmeetings.web.room.wb.InterviewWbPanel.INTERVIEWWB_JS_REFERENCE;
 import static org.apache.openmeetings.web.room.wb.WbPanel.WB_JS_REFERENCE;
 
 import java.io.IOException;
@@ -43,7 +44,6 @@ import org.apache.openmeetings.db.dao.calendar.AppointmentDao;
 import org.apache.openmeetings.db.dao.file.FileItemDao;
 import org.apache.openmeetings.db.dao.user.UserDao;
 import org.apache.openmeetings.db.entity.basic.Client;
-import org.apache.openmeetings.db.entity.basic.Client.StreamDesc;
 import org.apache.openmeetings.db.entity.calendar.Appointment;
 import org.apache.openmeetings.db.entity.calendar.MeetingMember;
 import org.apache.openmeetings.db.entity.file.BaseFileItem;
@@ -81,6 +81,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.core.request.handler.IPartialPageRequestHandler;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.ajax.AjaxDownloadBehavior;
+import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -108,6 +109,7 @@ import com.github.openjson.JSONObject;
 import com.googlecode.wicket.jquery.core.JQueryBehavior;
 import com.googlecode.wicket.jquery.core.Options;
 import com.googlecode.wicket.jquery.ui.interaction.droppable.Droppable;
+import com.googlecode.wicket.jquery.ui.settings.JQueryUILibrarySettings;
 
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.BootstrapAjaxLink;
 import de.agilecoders.wicket.core.markup.html.bootstrap.button.Buttons;
@@ -166,9 +168,9 @@ public class RoomPanel extends BasePanel {
 				sidebar.setFilesActive(target);
 			}
 			if (Room.Type.PRESENTATION != r.getType()) {
-				List<Client> mods = cm.listByRoom(r.getId(), cl -> cl.hasRight(Room.Right.MODERATOR));
-				log.debug("RoomPanel::roomEnter, mods IS EMPTY ? {}, is MOD ? {}", mods.isEmpty(), c.hasRight(Room.Right.MODERATOR));
-				if (mods.isEmpty()) {
+				boolean modsEmpty = noModerators();
+				log.debug("RoomPanel::roomEnter, mods IS EMPTY ? {}, is MOD ? {}", modsEmpty, c.hasRight(Room.Right.MODERATOR));
+				if (modsEmpty) {
 					showIdeaAlert(target, getString(r.isModerated() ? "641" : "498"));
 				}
 			}
@@ -181,11 +183,10 @@ public class RoomPanel extends BasePanel {
 		private void initVideos(AjaxRequestTarget target) {
 			StringBuilder sb = new StringBuilder();
 			JSONArray streams = new JSONArray();
-			for (Client c : cm.listByRoom(getRoom().getId())) {
-				for (StreamDesc sd : c.getStreams()) {
-					streams.put(sd.toJson());
-				}
-			}
+			cm.streamByRoom(getRoom().getId())
+				.map(Client::getStreams)
+				.flatMap(List::stream)
+				.forEach(sd -> streams.put(sd.toJson()));
 			if (streams.length() > 0) {
 				sb.append("VideoManager.play(").append(streams).append(", ").append(kHandler.getTurnServers(getClient())).append(");");
 			}
@@ -226,7 +227,7 @@ public class RoomPanel extends BasePanel {
 			super.onDownloadCompleted(target);
 			try {
 				Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), fuid));
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.error("unexcepted error while clean-up", e);
 			}
 			fuid = null;
@@ -311,7 +312,7 @@ public class RoomPanel extends BasePanel {
 		add(roomClosed = new RedirectMessageDialog("room-closed", "1098", r.isClosed(), r.getRedirectURL()));
 		if (r.isClosed()) {
 			room.setVisible(false);
-		} else if (cm.listByRoom(r.getId()).size() >= r.getCapacity()) {
+		} else if (cm.streamByRoom(r.getId()).count() >= r.getCapacity()) {
 			accessDenied = new ExpiredMessageDialog(ACCESS_DENIED_ID, getString("99"), menu);
 			room.setVisible(false);
 		} else if (r.getId().equals(WebSession.get().getRoomId())) {
@@ -335,7 +336,7 @@ public class RoomPanel extends BasePanel {
 					}
 					if (allowed) {
 						Calendar cal = WebSession.getCalendar();
-						if (isOwner || cal.getTime().after(a.getStart()) && cal.getTime().before(a.getEnd())) {
+						if (isOwner || cal.getTime().after(allowedStart(a.getStart())) && cal.getTime().before(a.getEnd())) {
 							eventDetail = new EventDetailDialog(EVENT_DETAILS_ID, a);
 						} else {
 							allowed = false;
@@ -396,7 +397,7 @@ public class RoomPanel extends BasePanel {
 			}
 			if (r.isModerated() && r.isWaitModerator()
 					&& !c.hasRight(Right.MODERATOR)
-					&& cm.listByRoom(r.getId(), cl -> cl.hasRight(Right.MODERATOR)).isEmpty())
+					&& noModerators())
 			{
 				room.setVisible(false);
 				createWaitModerator(true);
@@ -416,7 +417,7 @@ public class RoomPanel extends BasePanel {
 			.header(new ResourceModel("797"))
 			.setCloseOnEscapeKey(false)
 			.setBackdrop(Backdrop.FALSE)
-			.addButton(new BootstrapAjaxLink<>("button", Model.of(""), Buttons.Type.Outline_Primary, new ResourceModel("54")) {
+			.addButton(new BootstrapAjaxLink<>(BUTTON_MARKUP_ID, Model.of(""), Buttons.Type.Outline_Primary, new ResourceModel("54")) {
 				private static final long serialVersionUID = 1L;
 
 				public void onClick(AjaxRequestTarget target) {
@@ -619,13 +620,8 @@ public class RoomPanel extends BasePanel {
 			if (streamProcessor.isRecording(r.getId())) {
 				handler.appendJavaScript("if (typeof(WbArea) === 'object') {WbArea.setRecStarted(true);}");
 			} else if (streamProcessor.recordingAllowed(getClient())) {
-				boolean hasStreams = false;
-				for (Client cl : cm.listByRoom(r.getId())) {
-					if (!cl.getStreams().isEmpty()) {
-						hasStreams = true;
-						break;
-					}
-				}
+				boolean hasStreams = cm.streamByRoom(r.getId())
+						.anyMatch(cl -> !cl.getStreams().isEmpty());
 				handler.appendJavaScript(String.format("if (typeof(WbArea) === 'object') {WbArea.setRecStarted(false);WbArea.setRecEnabled(%s);}", hasStreams));
 			}
 		}
@@ -640,12 +636,8 @@ public class RoomPanel extends BasePanel {
 	}
 
 	public static boolean hasRight(ClientManager cm, long userId, long roomId, Right r) {
-		for (Client c : cm.listByRoom(roomId)) {
-			if (c.sameUserId(userId) && c.hasRight(r)) {
-				return true;
-			}
-		}
-		return false;
+		return cm.streamByRoom(roomId)
+				.anyMatch(c -> c.sameUserId(userId) && c.hasRight(r));
 	}
 
 	@Override
@@ -688,8 +680,15 @@ public class RoomPanel extends BasePanel {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(interview ? INTERVIEWWB_JS_REFERENCE : WB_JS_REFERENCE)));
-		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(RoomPanel.class, "room.js"))));
+		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(WB_JS_REFERENCE)));
+		response.render(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(RoomPanel.class, "room.js"))) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public List<HeaderItem> getDependencies() {
+				return List.of(new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JQueryUILibrarySettings.get().getJavaScriptReference())));
+			}
+		});
 		response.render(JavaScriptHeaderItem.forReference(TouchPunchResourceReference.instance()));
 		if (room.isVisible()) {
 			response.render(OnDomReadyHeaderItem.forScript(roomEnter.getCallbackScript()));
@@ -698,8 +697,7 @@ public class RoomPanel extends BasePanel {
 
 	public void requestRight(Right right, IPartialPageRequestHandler handler) {
 		RoomMessage.Type reqType = null;
-		List<Client> mods = cm.listByRoom(r.getId(), c -> c.hasRight(Room.Right.MODERATOR));
-		if (mods.isEmpty()) {
+		if (noModerators()) {
 			if (r.isModerated()) {
 				showIdeaAlert(handler, getString("696"));
 				return;
@@ -880,7 +878,7 @@ public class RoomPanel extends BasePanel {
 
 	private CharSequence createAddClientJs(Client c) {
 		JSONArray arr = new JSONArray();
-		cm.listByRoom(r.getId()).stream().forEach(cl -> arr.put(cl.toJson(c.getUid().equals(cl.getUid()))));
+		cm.streamByRoom(r.getId()).forEach(cl -> arr.put(cl.toJson(c.getUid().equals(cl.getUid()))));
 		return new StringBuilder()
 				.append("Room.addClient(")
 				.append(arr.toString(new NullStringer()))
@@ -907,5 +905,12 @@ public class RoomPanel extends BasePanel {
 			}
 		}
 		return res;
+	}
+
+	private boolean noModerators() {
+		return cm.streamByRoom(r.getId())
+				.filter(cl -> cl.hasRight(Room.Right.MODERATOR))
+				.findAny()
+				.isEmpty();
 	}
 }

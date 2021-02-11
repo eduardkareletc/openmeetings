@@ -18,6 +18,7 @@
  */
 package org.apache.openmeetings.web.common.tree;
 
+import static de.agilecoders.wicket.core.markup.html.bootstrap.dialog.Modal.BUTTON_MARKUP_ID;
 import static java.time.Duration.ZERO;
 import static java.util.UUID.randomUUID;
 import static org.apache.openmeetings.util.OmFileHelper.EXTENSION_JPG;
@@ -32,7 +33,6 @@ import static org.apache.openmeetings.web.pages.BasePage.ALIGN_RIGHT;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,7 +144,7 @@ public abstract class FileTreePanel extends Panel {
 	@SpringBean
 	private FileItemDao fileDao;
 
-	public FileTreePanel(String id, Long roomId, NameDialog addFolder) {
+	protected FileTreePanel(String id, Long roomId, NameDialog addFolder) {
 		super(id);
 		this.roomId = roomId;
 		this.addFolder = addFolder;
@@ -299,7 +299,7 @@ public abstract class FileTreePanel extends Panel {
 			}
 		};
 		buttons.setOutputMarkupId(true);
-		form.add(buttons.add(download, new ListView<>("other-buttons", newOtherButtons("button")) {
+		form.add(buttons.add(download, new ListView<>("other-buttons", newOtherButtons(BUTTON_MARKUP_ID)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -337,6 +337,10 @@ public abstract class FileTreePanel extends Panel {
 		response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(FileTreePanel.class, "filetree.js")));
 	}
 
+	/**
+	 * can be overridden by children to provide custom containment
+	 * @return custom containment
+	 */
 	protected String getContainment() {
 		return ".file.item.drop.area";
 	}
@@ -397,7 +401,6 @@ public abstract class FileTreePanel extends Panel {
 		f.setName(name);
 		f.setHash(randomUUID().toString());
 		f.setInsertedBy(getUserId());
-		f.setInserted(new Date());
 		f.setType(Type.FOLDER);
 		f.setOwnerId(p.getOwnerId());
 		f.setGroupId(p.getGroupId());

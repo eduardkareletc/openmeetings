@@ -60,8 +60,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.openjson.JSONObject;
-
-import de.agilecoders.wicket.extensions.markup.html.bootstrap.jqueryui.JQueryUIJavaScriptReference;
+import com.googlecode.wicket.jquery.ui.settings.JQueryUILibrarySettings;
 
 public class Chat extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -177,9 +176,10 @@ public class Chat extends Panel {
 
 			@Override
 			public List<HeaderItem> getDependencies() {
-				return List.of(JavaScriptHeaderItem.forScript("const bstooltip = jQuery.fn.tooltip;", "preserve-bs-tooltip")
-						, JQueryUIJavaScriptReference.asHeaderItem()
-						, JavaScriptHeaderItem.forScript("jQuery.fn.tooltip = bstooltip;", "restore-bs-tooltip")
+				return List.of(
+						new PriorityHeaderItem(JavaScriptHeaderItem.forScript("const bstooltip = jQuery.fn.tooltip;", "preserve-bs-tooltip"))
+						, new PriorityHeaderItem(JavaScriptHeaderItem.forReference(JQueryUILibrarySettings.get().getJavaScriptReference()))
+						, new PriorityHeaderItem(JavaScriptHeaderItem.forScript("jQuery.fn.tooltip = bstooltip;", "restore-bs-tooltip"))
 						);
 			}
 		});

@@ -95,7 +95,6 @@ public class RoomMenuPanel extends Panel {
 	};
 	private final RoomPanel room;
 	private OmMenuItem exitMenuItem;
-	private OmMenuItem filesMenu;
 	private final ImagePanel logo = new ImagePanel("logo") {
 		private static final long serialVersionUID = 1L;
 
@@ -145,12 +144,11 @@ public class RoomMenuPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(AjaxRequestTarget target) {
+			protected void onClick(AjaxRequestTarget target) {
 				chatDao.closeMessages(getUserId());
 				exit(target);
 			}
 		};
-		filesMenu = new OmMenuItem(getString("245"), null, false);
 		actionsSubMenu.init();
 		pollsSubMenu.init();
 		add((menuPanel = new MenuPanel("menu", getMenu())).setVisible(isVisible()));
@@ -185,18 +183,7 @@ public class RoomMenuPanel extends Panel {
 
 	private List<INavbarComponent> getMenu() {
 		List<INavbarComponent> menu = new ArrayList<>();
-		exitMenuItem.setVisible(false);
 		menu.add(exitMenuItem);
-
-		filesMenu.add(new OmMenuItem(getString("15"), getString("1479")) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				room.getSidebar().showUpload(target);
-			}
-		});
-		menu.add(filesMenu);
 
 		if (actionsSubMenu.isVisible()) {
 			menu.add(actionsSubMenu.getMenu());
@@ -212,11 +199,8 @@ public class RoomMenuPanel extends Panel {
 			return;
 		}
 		Room r = room.getRoom();
-		boolean isInterview = Room.Type.INTERVIEW == r.getType();
 		User u = room.getClient().getUser();
 		boolean notExternalUser = u.getType() != User.Type.CONTACT;
-		exitMenuItem.setVisible(notExternalUser);
-		filesMenu.setVisible(!isInterview && room.getSidebar().isShowFiles());
 		boolean moder = room.getClient().hasRight(Room.Right.MODERATOR);
 		actionsSubMenu.update(moder, notExternalUser);
 		pollsSubMenu.update(moder, notExternalUser, r);
@@ -260,6 +244,7 @@ public class RoomMenuPanel extends Panel {
 				room.getMainPanel().updateContents(ROOMS_PUBLIC, handler);
 			}
 		} else {
+			WebSession.get().invalidate();
 			String url = cfgDao.getString(CONFIG_REDIRECT_URL_FOR_EXTERNAL, "");
 			throw new RedirectToUrlException(Strings.isEmpty(url) ? getBaseUrl() : url);
 		}

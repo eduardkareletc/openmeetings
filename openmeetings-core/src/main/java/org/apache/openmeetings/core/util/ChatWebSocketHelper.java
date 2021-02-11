@@ -18,6 +18,7 @@
  */
 package org.apache.openmeetings.core.util;
 
+import static org.apache.openmeetings.core.util.WebSocketHelper.alwaysTrue;
 import static org.apache.openmeetings.core.util.WebSocketHelper.doSend;
 import static org.apache.openmeetings.core.util.WebSocketHelper.publish;
 
@@ -68,7 +69,7 @@ public class ChatWebSocketHelper {
 		JSONArray arr = new JSONArray();
 		for (ChatMessage m : list) {
 			String smsg = m.getMessage();
-			smsg = smsg == null ? smsg : " " + smsg.replaceAll("&nbsp;", " ") + " ";
+			smsg = smsg == null ? smsg : " " + smsg.replace("&nbsp;", " ") + " ";
 			JSONObject from = new JSONObject()
 					.put("id", m.getFromUser().getId())
 					.put("displayName", m.getFromName())
@@ -148,7 +149,7 @@ public class ChatWebSocketHelper {
 		if (publish) {
 			publish(new WsMessageChat2All(m, msg));
 		}
-		WebSocketHelper.send(a -> ((IApplication)a).getBean(IClientManager.class).list()
-				, (t, c) -> doSend(t, c, msg, (o, cm) -> setDates(o, m, c.getUser(), false), "all"), null);
+		WebSocketHelper.send(a -> ((IApplication)a).getBean(IClientManager.class).stream()
+				, (t, c) -> doSend(t, c, msg, (o, cm) -> setDates(o, m, c.getUser(), false), "all"), alwaysTrue());
 	}
 }

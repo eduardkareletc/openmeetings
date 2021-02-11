@@ -29,7 +29,6 @@ import static org.apache.openmeetings.util.OpenmeetingsVariables.isSipEnabled;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +47,7 @@ import org.apache.openmeetings.db.entity.room.Room.RoomElement;
 import org.apache.openmeetings.db.entity.room.Room.Type;
 import org.apache.openmeetings.db.entity.room.RoomFile;
 import org.apache.openmeetings.db.entity.room.RoomGroup;
+import org.apache.openmeetings.db.manager.ISipManager;
 import org.apache.openmeetings.db.util.DaoHelper;
 import org.apache.wicket.util.string.Strings;
 import org.slf4j.Logger;
@@ -70,7 +70,7 @@ public class RoomDao implements IGroupAdminDataProviderDao<Room> {
 	@Autowired
 	private ConfigurationDao cfgDao;
 	@Autowired
-	private SipDao sipDao;
+	private ISipManager sipManager;
 	@Autowired
 	private UserDao userDao;
 
@@ -203,19 +203,16 @@ public class RoomDao implements IGroupAdminDataProviderDao<Room> {
 	@Override
 	public Room update(Room entity, Long userId) {
 		if (entity.getId() == null) {
-			entity.setInserted(new Date());
 			em.persist(entity);
-		} else {
-			entity.setUpdated(new Date());
 		}
 		if (entity.isSipEnabled() && isSipEnabled()) {
 			String sipNumber = getSipNumber(entity.getId());
 			if (sipNumber != null && !sipNumber.equals(entity.getConfno())) {
 				entity.setConfno(sipNumber);
 			}
-			sipDao.update(sipNumber, entity.getPin());
+			sipManager.update(sipNumber, entity.getPin());
 		} else {
-			sipDao.delete(entity.getConfno());
+			sipManager.delete(entity.getConfno());
 			entity.setConfno(null);
 			entity.setPin(null);
 		}

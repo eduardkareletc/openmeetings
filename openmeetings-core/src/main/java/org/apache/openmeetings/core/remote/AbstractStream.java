@@ -22,13 +22,14 @@ import org.kurento.client.MediaPipeline;
 import org.kurento.client.MediaProfileSpecType;
 import org.kurento.client.PlayerEndpoint;
 import org.kurento.client.RecorderEndpoint;
+import org.kurento.client.RtpEndpoint;
 import org.kurento.client.WebRtcEndpoint;
 
 public abstract class AbstractStream {
 	protected final String sid;
 	protected final String uid;
 
-	public AbstractStream(final String sid, final String uid) {
+	protected AbstractStream(final String sid, final String uid) {
 		this.sid = sid;
 		this.uid = uid;
 	}
@@ -41,14 +42,22 @@ public abstract class AbstractStream {
 		return uid;
 	}
 
-	public void release(IStreamProcessor processor) {
-		release(processor, true);
+	public void release() {
+		release(true);
 	}
 
-	public abstract void release(IStreamProcessor processor, boolean remove);
+	public abstract void release(boolean remove);
 
-	public static WebRtcEndpoint createWebRtcEndpoint(MediaPipeline pipeline) {
-		return new WebRtcEndpoint.Builder(pipeline).build();
+	public static WebRtcEndpoint createWebRtcEndpoint(MediaPipeline pipeline, Boolean recv) {
+		WebRtcEndpoint.Builder builder = new WebRtcEndpoint.Builder(pipeline);
+		if (recv != null) {
+			if (recv) {
+				builder.recvonly();
+			} else {
+				builder.sendonly();
+			}
+		}
+		return builder.build();
 	}
 
 	public static RecorderEndpoint createRecorderEndpoint(MediaPipeline pipeline, String path, MediaProfileSpecType profile) {
@@ -59,5 +68,9 @@ public abstract class AbstractStream {
 
 	public static PlayerEndpoint createPlayerEndpoint(MediaPipeline pipeline, String path) {
 		return new PlayerEndpoint.Builder(pipeline, path).build();
+	}
+
+	public static RtpEndpoint createRtpEndpoint(MediaPipeline pipeline) {
+		return new RtpEndpoint.Builder(pipeline).build();
 	}
 }

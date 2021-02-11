@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -291,11 +292,11 @@ public class User extends HistoricalEntity {
 	private String externalId;
 
 	@XmlElement(name = "externalUserType", required = false)
-	@Deprecated(since = "5.0")
 	@Transient
 	/**
 	 * @deprecated External group should be used instead
 	 */
+	@Deprecated(since = "5.0")
 	private String externalType;
 
 	/**
@@ -409,7 +410,9 @@ public class User extends HistoricalEntity {
 	}
 
 	public User setDisplayName(String displayName) {
-		if (!Strings.isEmpty(displayName)) {
+		if (Strings.isEmpty(displayName)) {
+			resetDisplayName();
+		} else {
 			this.displayName = escapeMarkup(displayName).toString();
 		}
 		return this;
@@ -548,18 +551,18 @@ public class User extends HistoricalEntity {
 		return extType.isPresent() ? extType.get() : null;
 	}
 
-	@Deprecated(since = "5.0")
 	/**
 	 * @deprecated External group should be used instead
 	 */
+	@Deprecated(since = "5.0")
 	public String getExternalType() {
 		return externalType;
 	}
 
-	@Deprecated(since = "5.0")
 	/**
 	 * @deprecated External group should be used instead
 	 */
+	@Deprecated(since = "5.0")
 	public void setExternalType(String externalType) {
 		this.externalType = externalType;
 	}
@@ -661,28 +664,24 @@ public class User extends HistoricalEntity {
 	}
 
 	private String generateDisplayName() {
-		StringBuilder sb = new StringBuilder();
-		String delim = "";
+		StringJoiner joiner = new StringJoiner(" ")
+				.setEmptyValue(DISPLAY_NAME_NA);
 		OmLanguage l = LabelDao.getLanguage(languageId);
 		String first = l.isRtl() ? lastname : firstname;
 		String last = l.isRtl() ? firstname : lastname;
 		if (!Strings.isEmpty(first)) {
-			sb.append(first);
-			delim = " ";
+			joiner.add(first);
 		}
 		if (!Strings.isEmpty(last)) {
-			sb.append(delim).append(last);
+			joiner.add(last);
 		}
-		if (Strings.isEmpty(sb)) {
+		if (id != null && joiner.length() == 0) {
 			if (Type.CONTACT == type && address != null && !Strings.isEmpty(address.getEmail())) {
-				sb.append(address.getEmail());
+				joiner.add(address.getEmail());
 			} else {
-				sb.append(login);
+				joiner.add(login);
 			}
 		}
-		if (Strings.isEmpty(sb)) {
-			sb.append(DISPLAY_NAME_NA);
-		}
-		return escapeMarkup(sb).toString();
+		return escapeMarkup(joiner.toString()).toString();
 	}
 }

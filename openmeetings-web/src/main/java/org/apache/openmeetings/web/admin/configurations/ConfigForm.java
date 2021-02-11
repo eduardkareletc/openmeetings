@@ -159,6 +159,7 @@ public class ConfigForm extends AdminBaseForm<Configuration> {
 		booleanBox.add(valueB.setLabel(new ResourceModel("271"))).setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true);
 		hotkeyBox.add(valueH.setLabel(new ResourceModel("271"))).setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true);
 		add(stringBox, numberBox, booleanBox, hotkeyBox);
+		setNewRecordVisible(true);
 	}
 
 	@Override
@@ -168,7 +169,7 @@ public class ConfigForm extends AdminBaseForm<Configuration> {
 			getModelObject().setId(c.getId());
 		}
 		setModelObject(cfgDao.update(getModelObject(), WebSession.getUserId()));
-		setNewVisible(false);
+		setNewRecordVisible(false);
 		target.add(listContainer);
 		refresh(target);
 	}

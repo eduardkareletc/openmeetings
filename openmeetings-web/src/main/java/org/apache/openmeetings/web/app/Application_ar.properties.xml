@@ -53,7 +53,6 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="54"><![CDATA[موافق]]></entry>
 	<entry key="59"><![CDATA[اللغة]]></entry>
 	<entry key="62"><![CDATA[مسح اللوح الابيض]]></entry>
-	<entry key="64"><![CDATA[لا تسأل مرة أخرى]]></entry>
 	<entry key="70"><![CDATA[الغاء]]></entry>
 	<entry key="72"><![CDATA[اختر جسم]]></entry>
 	<entry key="73"><![CDATA[النص]]></entry>
@@ -169,7 +168,7 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="363"><![CDATA[حذف لغة]]></entry>
 	<entry key="366"><![CDATA[إضافة لغة]]></entry>
 	<entry key="367"><![CDATA[نسخ إحتياطي]]></entry>
-	<entry key="376"><![CDATA[مرحباً،]]></entry>
+	<entry key="376"><![CDATA[مرحباً]]></entry>
 	<entry key="377"><![CDATA[عدل ملفك الشخصي]]></entry>
 	<entry key="378"><![CDATA[رسائل جديدة:]]></entry>
 	<entry key="379"><![CDATA[إيداع صور جديدة]]></entry>
@@ -190,11 +189,9 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="442"><![CDATA[حذف سجل دردشة الخادم]]></entry>
 	<entry key="482"><![CDATA[المشاركون]]></entry>
 	<entry key="498"><![CDATA[لا يوجد مشرف في هذه الغرفة ، ولكن يوجد بعض المشاركين. عليك أن تتقدم لتكون المشرف أو تنتظر.]]></entry>
-	<entry key="499"><![CDATA[ملاحظات {0}]]></entry>
 	<entry key="500"><![CDATA[دعوة {0}]]></entry>
 	<entry key="501"><![CDATA[رسالة من المستخدم:]]></entry>
 	<entry key="502"><![CDATA[رسالة:]]></entry>
-	<entry key="503"><![CDATA[انقر فوق هذا الرابط للمشاركة في المؤتمر [قد يعمل الرابط فقط لفترة معينة.]:]]></entry>
 	<entry key="504"><![CDATA[أنقر هنا لدخول الغرفة]]></entry>
 	<entry key="505"><![CDATA[إذا واجهتك مشاكل مع الرابط، الرجاء نسخه و من ثم لصقه في المتصفح:]]></entry>
 	<entry key="506"><![CDATA[تفاصيل الحساب {0}]]></entry>
@@ -205,7 +202,7 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="514"><![CDATA[انقر على هذا الرابط من أجل إدخال كلمة مرور جديدة:]]></entry>
 	<entry key="515"><![CDATA[انقر على هنا من أجل إدخال كلمة مرور جديدة]]></entry>
 	<entry key="517"><![CDATA[إعادة تعيين كلمة المرور {0}]]></entry>
-	<entry key="524"><![CDATA[محمي عن طريق كلمة مرور]]></entry>
+	<entry key="524"><![CDATA[محمية بكلمة سرية]]></entry>
 	<entry key="526"><![CDATA[فترة الصلاحية]]></entry>
 	<entry key="527"><![CDATA[أبدي]]></entry>
 	<entry key="528"><![CDATA[مدة]]></entry>
@@ -224,8 +221,6 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="557"><![CDATA[المؤشر]]></entry>
 	<entry key="565"><![CDATA[نوع الإعلام]]></entry>
 	<entry key="569"><![CDATA[موقع]]></entry>
-	<entry key="570"><![CDATA[بداية:]]></entry>
-	<entry key="571"><![CDATA[نهاية:]]></entry>
 	<entry key="572"><![CDATA[عنوان]]></entry>
 	<entry key="582"><![CDATA[صفحتي]]></entry>
 	<entry key="583"><![CDATA[مشاهدة الإجتماعات أو الاحداث المسجلة]]></entry>
@@ -290,7 +285,6 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="784"><![CDATA[قدم طلبًا للاشراف]]></entry>
 	<entry key="785"><![CDATA[التقدم بطلب للحصول على استخدام السبورة]]></entry>
 	<entry key="786"><![CDATA[تقدم بطلب الوصول إلى الكاميرا / الميكروفون]]></entry>
-	<entry key="788"><![CDATA[البداية]]></entry>
 	<entry key="792"><![CDATA[غرف]]></entry>
 	<entry key="797"><![CDATA[تحذير]]></entry>
 	<entry key="799"><![CDATA[يوم]]></entry>
@@ -349,7 +343,7 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="1115"><![CDATA[اسم ملف الاعدادات]]></entry>
 	<entry key="1116"><![CDATA[إذا قمت بتمكين "إضافة مجال إلى اسم المستخدم" ، تتم إضافة قيمة الحقل "المجال" إلى كل تسجيل دخول يدخله المستخدم في مربع تسجيل الدخول. هذا مفيد إذا تم تخزين تسجيل الدخول في Ldap بما في ذلك اسم المجال. مثال: يقوم المستخدم بإدخال المجال "hans" محددًا كـ "localhost.com" ، تسجيل الدخول الذي تم التحقق منه مقابل Ldap هو: hans@localhost.com]]></entry>
 	<entry key="1117"><![CDATA[أضف المجال إلى اسم المستخدم]]></entry>
-	<entry key="1118"><![CDATA[Domain]]></entry>
+	<entry key="1118"><![CDATA[نطاق]]></entry>
 	<entry key="1121"><![CDATA[نص الحافظة البعيد]]></entry>
 	<entry key="1131"><![CDATA[ادعوة مستخدم إلى غرفة الاجتماعات]]></entry>
 	<entry key="1132"><![CDATA[اختر غرفة اجتماعات. سيتلقى المستخدم المدعو رسالة باسمك ورابط للغرفة.]]></entry>
@@ -362,8 +356,6 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="1147"><![CDATA[انشأ من قبل]]></entry>
 	<entry key="1151"><![CDATA[مؤتمر {0} جديد:]]></entry>
 	<entry key="1152"><![CDATA[التفاصيل:]]></entry>
-	<entry key="1153"><![CDATA[بداية:]]></entry>
-	<entry key="1154"><![CDATA[النهاية:]]></entry>
 	<entry key="1155"><![CDATA[تم تغيير المؤتمر {0}:]]></entry>
 	<entry key="1156"><![CDATA[منظم:]]></entry>
 	<entry key="1157"><![CDATA[الغاء المؤتمر {0}:]]></entry>
@@ -377,7 +369,6 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="1168"><![CDATA[إظهار بيانات الاتصال لجهات الاتصال فقط]]></entry>
 	<entry key="1169"><![CDATA[إظهار بيانات الاتصال لأي شخص]]></entry>
 	<entry key="1170"><![CDATA[ملفي]]></entry>
-	<entry key="1171"><![CDATA[تحرير الإعدادات]]></entry>
 	<entry key="1172"><![CDATA[بحث المستخدمين]]></entry>
 	<entry key="1177"><![CDATA[عروض المستخدم]]></entry>
 	<entry key="1178"><![CDATA[يبحث المستخدم عن]]></entry>
@@ -459,7 +450,7 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="1430"><![CDATA[يؤثر تغيير الدقة على النطاق الترددي ، فالصورة الأكبر تحتاج إلى مزيد من النطاق الترددي!]]></entry>
 	<entry key="1443"><![CDATA[خيارات التخطيط]]></entry>
 	<entry key="1444"><![CDATA[حدث جديد]]></entry>
-	<entry key="1445"><![CDATA[كلمة المرور المحمية هي روابط المؤتمر التي يتم إرسالها إلى المشاركين عند حفظ حدث التقويم ، وليس الغرفة! هذا يعني أنه إذا قمت بحفظ الحدث عدة مرات ولكن باستخدام كلمات مرور مختلفة ، فإن كل مشارك يتلقى رابطًا جديدًا له كلمة مرور مختلفة. لكن الروابط القديمة لا تزال تعمل بمجرد إرسالها!]]></entry>
+	<entry key="1445"><![CDATA[كلمة المرور المحمية هي روابط المؤتمر التي يتم إرسالها إلى المشاركين عند حفظ حدث التقويم ، وليس الغرفة! هذا يعني أنه إذا قمت بحفظ الحدث عدة مرات ولكن باستخدام كلمات مرور مختلفة ، فإن كل مشارك يتلقى رابطًا جديدًا يحتوي على كلمة مرور مختلفة. لكن الروابط القديمة لا تزال تعمل بمجرد إرسالها!]]></entry>
 	<entry key="1447"><![CDATA[إظهارمزول SIP]]></entry>
 	<entry key="1448"><![CDATA[اتصل]]></entry>
 	<entry key="1450"><![CDATA[بيتك!]]></entry>
@@ -568,9 +559,11 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="admin.group.form.maxFilesSize"><![CDATA[الحجم الأقصى للملفات]]></entry>
 	<entry key="admin.group.form.maxRecordingsSize"><![CDATA[الحجم الأقصى للتسجيلات]]></entry>
 	<entry key="admin.group.form.maxRooms"><![CDATA[الحد الأقصى لرقم الغرفة]]></entry>
+	<entry key="admin.group.form.minutes"><![CDATA[دقائق]]></entry>
 	<entry key="admin.group.form.recordingTtl"><![CDATA[التسجيلات تنتهي في]]></entry>
 	<entry key="admin.group.form.reminderDays"><![CDATA[تم إرسال تذكير انتهاء الصلاحية]]></entry>
 	<entry key="admin.group.form.tag"><![CDATA[وسم]]></entry>
+	<entry key="admin.group.new.users.notification.interval"><![CDATA[الفاصل الزمني بالإعلام بوجود مستخدم جديد]]></entry>
 	<entry key="admin.oauth.attr.oauth"><![CDATA[سمة مستخدم النظام الخارجي]]></entry>
 	<entry key="admin.oauth.attr.om"><![CDATA[سمة مستخدم النظام]]></entry>
 	<entry key="admin.oauth.req.info.method"><![CDATA[طريقة طلب المعلومات]]></entry>
@@ -627,8 +620,10 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="dashboard.widget.admin.cleanup.warn"><![CDATA[هل أنت متأكد أنك تريد حذف كافة الملفات المؤقتة؟ هذه العملية لا يمكن التراجع عنها.]]></entry>
 	<entry key="dashboard.widget.admin.desc"><![CDATA[وظائف الإدارة العامة]]></entry>
 	<entry key="dashboard.widget.admin.title"><![CDATA[وظائف المسؤول]]></entry>
+	<entry key="dont.ask.again"><![CDATA[لا تسأل مرة أخرى]]></entry>
 	<entry key="download.pdf"><![CDATA[تنزيل كملف PDF]]></entry>
 	<entry key="download.png"><![CDATA[تنزيل بتنسيق PNG]]></entry>
+	<entry key="edit.settings"><![CDATA[تحرير الإعدادات]]></entry>
 	<entry key="error.bad.credentials"><![CDATA[اسم المستخدم / البريد الإلكتروني و / أو كلمة المرور غير صحيحة.]]></entry>
 	<entry key="error.bad.password"><![CDATA[كلمة مرور غير صحيحة]]></entry>
 	<entry key="error.cfg.exist"><![CDATA[الاعداد بالمفتاح المحدد موجود بالفعل ، يرجى تحديد مفتاح آخر أو تعديل الاعداد الموجود]]></entry>
@@ -655,6 +650,7 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="files.download.pdf"><![CDATA[PDF]]></entry>
 	<entry key="files.root.group"><![CDATA[ملفات المجموعة]]></entry>
 	<entry key="find.user"><![CDATA[البحث عن مستخدم]]></entry>
+	<entry key="fixed.video.pod.size"><![CDATA[حجم اطار الفيديو الثابت]]></entry>
 	<entry key="goto.first"><![CDATA[القفز إلى الأول]]></entry>
 	<entry key="goto.last"><![CDATA[القفز إلى الأخير]]></entry>
 	<entry key="goto.next"><![CDATA[القفز إلى التالي]]></entry>
@@ -823,8 +819,13 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 
 	<br />
 	]]></entry>
-	<entry key="invalid.hash"><![CDATA[Invalid hash]]></entry>
+	<entry key="internal.error"><![CDATA[للأسف حدث شيء سيء :( ، <br/>
+يرجى مراجعة <tt> openmeetings.log </tt> والاتصال بمطوري OpenMeetings]]></entry>
+	<entry key="invalid.hash"><![CDATA[خطأ في مفتاح الترميز Invalid Hash]]></entry>
 	<entry key="label.dock.panel"><![CDATA[انقر لإرساء اللوحة]]></entry>
+	<entry key="label.end"><![CDATA[نهاية]]></entry>
+	<entry key="label.hangup"><![CDATA[أنهى محادثة هاتفية]]></entry>
+	<entry key="label.start"><![CDATA[بداية]]></entry>
 	<entry key="label.undock.panel"><![CDATA[انقر لإلغاء قفل اللوحة]]></entry>
 	<entry key="lbl.cancel"><![CDATA[الغاء]]></entry>
 	<entry key="lbl.email"><![CDATA[البريد الإلكتروني]]></entry>
@@ -835,6 +836,7 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="lbl.refresh"><![CDATA[تحديث]]></entry>
 	<entry key="lbl.settings.whiteboard"><![CDATA[إعدادات السبورة]]></entry>
 	<entry key="lbl.update"><![CDATA[تحديث]]></entry>
+	<entry key="lbl.video"><![CDATA[فيديو]]></entry>
 	<entry key="main.menu.admin.email"><![CDATA[إدارة البريد الإلكتروني]]></entry>
 	<entry key="main.menu.admin.email.desc"><![CDATA[تحقق من معالجة رسائل البريد الإلكتروني بواسطة النظام]]></entry>
 	<entry key="menu.polls"><![CDATA[استطلاعات الرأي]]></entry>
@@ -873,6 +875,8 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="network.test.upl.bytes"><![CDATA[بايت تم تحميلها]]></entry>
 	<entry key="network.test.upl.speed"><![CDATA[سرعة الرفع]]></entry>
 	<entry key="network.test.upl.time"><![CDATA[وقت التحميل]]></entry>
+	<entry key="notification.chat.message"><![CDATA[لديك رسالة (رسائل) دردشة جديدة]]></entry>
+	<entry key="notification.room.activity"><![CDATA[لديك أنشطة جديدة ، يرجى تحديد "الأنشطة والعمل"]]></entry>
 	<entry key="poll.clone"><![CDATA[استنساخ]]></entry>
 	<entry key="poll.type.NUMERIC"><![CDATA[عددي من 1 الى 10]]></entry>
 	<entry key="poll.type.YES_NO"><![CDATA[نعم / لا]]></entry>
@@ -894,13 +898,22 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="send.on.enter"><![CDATA[أرسل على Enter]]></entry>
 	<entry key="sound.enable"><![CDATA[تمكين الصوت]]></entry>
 	<entry key="sound.mute"><![CDATA[كتم الصوت]]></entry>
+	<entry key="template.new.group.users.notification.body"><![CDATA[عزيزي مشرف المجموعة "{0}" ، <br/>
+<br/>
+تمت إضافة {1} من المستخدمين الجدد إلى المجموعة في آخر {2} ساعة <br/>
+يرجى زيارة خادم OM {3} والتحقق منها ضمن قائمة المسؤول -> المجموعات]]></entry>
+	<entry key="template.new.group.users.notification.footer"><![CDATA[مع التحيات ، <br/>
+ فريق دعم {0}.]]></entry>
+	<entry key="template.new.group.users.notification.subject"><![CDATA[[{0}] مستخدمو مجموعة "{1}" الجدد]]></entry>
 	<entry key="template.recording.expiring.body"><![CDATA[سيتم حذف تسجيلك {0} الأخير تلقائيًا
 في {1} يوم. إذا كنت ترغب في حفظ هذا التسجيل ، يرجى تنزيله قبل ذلك الحين.]]></entry>
 	<entry key="template.recording.expiring.footer"><![CDATA[مع التحيات,<br/>
 	{0} فريق الاسناد.]]></entry>
-	<entry key="template.recording.expiring.greetings"><![CDATA[مرحبا {0}]]></entry>
+	<entry key="template.recording.expiring.greetings"><![CDATA[مرحباً {0}]]></entry>
 	<entry key="template.recording.expiring.subj.prefix"><![CDATA[سيتم حذف التسجيل]]></entry>
 	<entry key="template.recording.expiring.subj.room"><![CDATA[- غرفة [{0}]]]></entry>
+	<entry key="template.recording.invitation.text"><![CDATA[انقر فوق هذا الرابط  لعرض فيديو تسجيل المؤتمر. [الرابط قد يعمل فقط لفترة معينة.]]]></entry>
+	<entry key="template.room.invitation.text"><![CDATA[انقر فوق هذا الرابط للمشاركة في المؤتمر [قد يعمل الرابط فقط لفترة معينة.]:]]></entry>
 	<entry key="ulist.right.audio.grant"><![CDATA[السماح لهذا المستخدم باستخدام الميكروفون]]></entry>
 	<entry key="ulist.right.audio.request"><![CDATA[طلب إذن لاستخدام الميكروفون]]></entry>
 	<entry key="ulist.right.audio.revoke"><![CDATA[كتم صوت المستخدم وإزالة الحق في تشغيل الميكروفون]]></entry>
@@ -947,7 +960,7 @@ see https://openmeetings.apache.org/LanguageEditor.html for Details
 	<entry key="wait-moderator.title"><![CDATA[يرجى التحلي بالصبر ...]]></entry>
 	<entry key="warn.nogroup"><![CDATA[تمت إضافة المستخدم لكن يجب إنساب هذا المستخدم إلى تنظيم و إلا لن يمكنه تسجيل الدخول]]></entry>
 	<entry key="warn.notverified"><![CDATA[لقد سجلت بنجاح. سيتم إرسال بريد إلكتروني برمز التحقق إلى صندوق البريد الخاص بك.]]></entry>
-	<entry key="wb.tool.math.formula"><![CDATA[صيغة الرياضيات]]></entry>
+	<entry key="wb.tool.math.formula"><![CDATA[صيغ الرياضيات]]></entry>
 	<entry key="wb.tool.math.guide.lbl"><![CDATA[دليل بناء الجملة الرياضاتيه]]></entry>
 	<entry key="wb.tool.math.guide.url"><![CDATA[https://en.wikibooks.org/wiki/LaTeX/Mathematics]]></entry>
 	<entry key="wb.tool.white-out"><![CDATA[تبييض]]></entry>

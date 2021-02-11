@@ -22,7 +22,7 @@
 	<parent>
 		<groupId>org.apache.openmeetings</groupId>
 		<artifactId>openmeetings-parent</artifactId>
-		<version>5.1.0-SNAPSHOT</version>
+		<version>6.0.0-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>openmeetings-db</artifactId>
@@ -73,11 +73,6 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.asteriskjava</groupId>
-			<artifactId>asterisk-java</artifactId>
-			<version>${asterisk-java.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
 			<version>${commons-dbcp.version}</version>
@@ -109,8 +104,9 @@
 			<version>${mssql.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.sip</groupId>
-			<artifactId>jain-sip-ri</artifactId>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc10</artifactId>
+			<version>${ojdbc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.openmeetings</groupId>

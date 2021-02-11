@@ -1,6 +1,6 @@
 ![About Openmeetings Logo](/openmeetings-server/src/site/resources/images/logo.png)
 
-[Apache OpenMeetings](https://openmeetings.apache.org) provides: 
+[Apache OpenMeetings](https://openmeetings.apache.org) provides:
  - [x] **video conferencing**
  - [x] **instant messaging**
  - [x] **white board**
@@ -51,14 +51,36 @@ Builds and CI
 | Master nightly | [![Build Status](https://ci-builds.apache.org/job/OpenMeetings/job/openmeetings//badge/icon)](https://builds.apache.org/view/M-R/view/OpenMeetings/job/openmeetings/) |
 | Master Pull Request | [![Build Status](https://ci-builds.apache.org/job/OpenMeetings/job/openmeetings-pr-build/badge/icon)](https://builds.apache.org/view/M-R/view/OpenMeetings/job/openmeetings-pr-build/) |
 
-Release Notes 
+Release Notes
 =============
 
 see [CHANGELOG.md](/CHANGELOG.md) file for detailed log
 
+5.1.0
+-----
+[Release 5.1.0](https://www.apache.org/dyn/closer.lua/openmeetings/5.1.0), provides following improvements:
+
+This release provides WebRTC audio/video/screen-sharing in the Room
+
+Stability:
+* Room Audio/Video should be more stable
+* OM should work as expected after KMS server restart
+* Backup is further improved
+* Audio/Video connection established faster
+* Most recent versions of dependencies are used
+
+UI:
+* User display name is used almost everywhere
+* Browser notifications are used to notify about new chat messages and moderator actions
+* Interview room was broken
+* Mute and "Mic status" were broken
+
+Some other fixes and improvements, 52 issues were addressed
+
+
 5.0.1
 -----
-[Release 5.0.1](https://www.apache.org/dyn/closer.lua/openmeetings/5.0.1), provides following improvements:
+[Release 5.0.1](https://archive.apache.org/dist/openmeetings/5.0.1), provides following improvements:
 
 This release provides WebRTC audio/video/screen-sharing in the Room
 

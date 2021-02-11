@@ -18,20 +18,19 @@
  */
 package org.apache.openmeetings.util.process;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.openmeetings.util.CalendarHelper.formatMillis;
+import static org.apache.openmeetings.util.OpenmeetingsVariables.getExtProcessTtl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.openmeetings.util.CalendarHelper.formatMillis;
-import static org.apache.openmeetings.util.OpenmeetingsVariables.getExtProcessTtl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProcessHelper {
 	public static final Logger log = LoggerFactory.getLogger(ProcessHelper.class);
@@ -56,7 +55,7 @@ public class ProcessHelper {
 					line = br.readLine();
 				}
 			} catch (IOException ioexception) {
-				return;
+				// no-op
 			}
 		}
 
@@ -98,8 +97,7 @@ public class ProcessHelper {
 	}
 
 	public static ProcessResult executeScript(String process, String[] argv, boolean optional) {
-		Map<String, String> env = new HashMap<>();
-		return executeScript(process, argv, env, optional);
+		return executeScript(process, argv, Map.of(), optional);
 	}
 
 	private static ProcessResult executeScript(String process, String[] argv, Map<? extends String, ? extends String> env, boolean optional) {
